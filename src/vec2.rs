@@ -1,6 +1,5 @@
 use std::fmt::{Debug, Formatter, Result};
 use std::simd::f64x4;
-use std::simd::num::SimdFloat;
 
 pub struct Vector2(f64x4);
 

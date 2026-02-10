@@ -12,6 +12,10 @@ nalgebra = "0.33"
 rand = "0.8"
 
 [[bench]]
+name = "vec2_bench"
+harness = false
+
+[[bench]]
 name = "vec3_bench"
 harness = false
 
