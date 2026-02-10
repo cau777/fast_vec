@@ -1,0 +1,21 @@
+[package]
+name = "fast-vec"
+description = "Vector2 and Vector3 classes that use simd for performance"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+[dev-dependencies]
+criterion = "0.5"
+nalgebra = "0.33"
+rand = "0.8"
+
+[[bench]]
+name = "vec3_bench"
+harness = false
+
+[profile.release]
+opt-level = 3          # Maximum optimization (default for release, but explicit)
+lto = "fat"            # Link-Time Optimization - significant speedup, slower compile
+codegen-units = 1      # Better optimization, slower compile
