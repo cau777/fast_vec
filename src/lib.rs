@@ -3,6 +3,7 @@
 mod vec2;
 mod vec3;
 
+pub use vec2::Vector2;
 pub use vec3::Vector3;
 
 pub fn add(left: u64, right: u64) -> u64 {

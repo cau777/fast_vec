@@ -11,54 +11,77 @@ impl Debug for Vector3 {
 }
 
 impl Vector3 {
+    #[inline]
+    #[must_use]
     pub fn new(x: f64, y: f64, z: f64) -> Self {
         Self(f64x4::from_array([x, y, z, 0.0]))
     }
 
+    #[inline]
+    #[must_use]
     pub fn zeros() -> Self {
         Self(f64x4::splat(0.0))
     }
 
+    #[inline]
+    #[must_use]
     pub fn ones() -> Self {
         Self(f64x4::from_array([1.0, 1.0, 1.0, 0.0]))
     }
 
+    #[inline]
+    #[must_use]
     pub fn x(&self) -> f64 {
         self.0[0]
     }
 
+    #[inline]
+    #[must_use]
     pub fn y(&self) -> f64 {
         self.0[1]
     }
 
+    #[inline]
+    #[must_use]
     pub fn z(&self) -> f64 {
         self.0[2]
     }
 
+    #[inline]
     pub fn set_x(&mut self, x: f64) {
         self.0[0] = x;
     }
 
+    #[inline]
     pub fn set_y(&mut self, y: f64) {
         self.0[1] = y;
     }
 
+    #[inline]
     pub fn set_z(&mut self, z: f64) {
         self.0[2] = z;
     }
 
+    #[inline]
+    #[must_use]
     pub fn dot(self, rhs: Self) -> f64 {
         (self.0 * rhs.0).reduce_sum()
     }
 
+    #[inline]
+    #[must_use]
     pub fn magnitude_squared(self) -> f64 {
         self.dot(self)
     }
 
+    #[inline]
+    #[must_use]
     pub fn magnitude(self) -> f64 {
         self.magnitude_squared().sqrt()
     }
 
+    #[inline]
+    #[must_use]
     pub fn normalize(self) -> Self {
         let mag = self.magnitude();
         if mag == 0.0 {
@@ -68,6 +91,8 @@ impl Vector3 {
         }
     }
 
+    #[inline]
+    #[must_use]
     pub fn cross(self, rhs: Self) -> Self {
         let a = self.0;
         let b = rhs.0;
@@ -80,10 +105,14 @@ impl Vector3 {
         Self(result)
     }
 
+    #[inline]
+    #[must_use]
     pub fn distance(self, rhs: Self) -> f64 {
         (self - rhs).magnitude()
     }
 
+    #[inline]
+    #[must_use]
     pub fn distance_squared(self, rhs: Self) -> f64 {
         (self - rhs).magnitude_squared()
     }
@@ -92,6 +121,7 @@ impl Vector3 {
 impl std::ops::Add for Vector3 {
     type Output = Vector3;
 
+    #[inline]
     fn add(self, rhs: Self) -> Self::Output {
         Self(self.0 + rhs.0)
     }
@@ -100,6 +130,7 @@ impl std::ops::Add for Vector3 {
 impl std::ops::Sub for Vector3 {
     type Output = Vector3;
 
+    #[inline]
     fn sub(self, rhs: Self) -> Self::Output {
         Self(self.0 - rhs.0)
     }
@@ -108,6 +139,7 @@ impl std::ops::Sub for Vector3 {
 impl std::ops::Mul<f64> for Vector3 {
     type Output = Vector3;
 
+    #[inline]
     fn mul(self, rhs: f64) -> Self::Output {
         Self(self.0 * f64x4::splat(rhs))
     }
@@ -116,6 +148,7 @@ impl std::ops::Mul<f64> for Vector3 {
 impl std::ops::Mul<Vector3> for f64 {
     type Output = Vector3;
 
+    #[inline]
     fn mul(self, rhs: Vector3) -> Self::Output {
         rhs * self
     }
@@ -124,6 +157,7 @@ impl std::ops::Mul<Vector3> for f64 {
 impl std::ops::Div<f64> for Vector3 {
     type Output = Vector3;
 
+    #[inline]
     fn div(self, rhs: f64) -> Self::Output {
         Self(self.0 / f64x4::splat(rhs))
     }
@@ -132,42 +166,49 @@ impl std::ops::Div<f64> for Vector3 {
 impl std::ops::Neg for Vector3 {
     type Output = Vector3;
 
+    #[inline]
     fn neg(self) -> Self::Output {
         Self(-self.0)
     }
 }
 
 impl std::ops::AddAssign for Vector3 {
+    #[inline]
     fn add_assign(&mut self, rhs: Self) {
         self.0 += rhs.0;
     }
 }
 
 impl std::ops::SubAssign for Vector3 {
+    #[inline]
     fn sub_assign(&mut self, rhs: Self) {
         self.0 -= rhs.0;
     }
 }
 
 impl std::ops::MulAssign<f64> for Vector3 {
+    #[inline]
     fn mul_assign(&mut self, rhs: f64) {
         self.0 *= f64x4::splat(rhs);
     }
 }
 
 impl std::ops::DivAssign<f64> for Vector3 {
+    #[inline]
     fn div_assign(&mut self, rhs: f64) {
         self.0 /= f64x4::splat(rhs);
     }
 }
 
 impl PartialEq for Vector3 {
+    #[inline]
     fn eq(&self, other: &Self) -> bool {
         self.0[0] == other.0[0] && self.0[1] == other.0[1] && self.0[2] == other.0[2]
     }
 }
 
 impl Clone for Vector3 {
+    #[inline]
     fn clone(&self) -> Self {
         Self(self.0)
     }

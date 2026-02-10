@@ -1,17 +1,6 @@
-use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use fast_vec::Vector3;
 use nalgebra::Vector3 as NalgebraVector3;
-use rand::Rng;
-
-fn random_vector3() -> Vector3 {
-    let mut rng = rand::thread_rng();
-    Vector3::new(rng.gen(), rng.gen(), rng.gen())
-}
-
-fn random_nalgebra_vector3() -> NalgebraVector3<f64> {
-    let mut rng = rand::thread_rng();
-    NalgebraVector3::new(rng.gen(), rng.gen(), rng.gen())
-}
 
 fn benchmark_new(c: &mut Criterion) {
     c.bench_function("fast_vec_new", |b| {
@@ -27,203 +16,202 @@ fn benchmark_zeros(c: &mut Criterion) {
         b.iter(|| Vector3::zeros());
     });
     c.bench_function("nalgebra_zeros", |b| {
-        b.iter(|| NalgebraVector3::zeros());
+        b.iter(|| NalgebraVector3::<f64>::zeros());
     });
 }
 
 fn benchmark_add(c: &mut Criterion) {
-    let a = random_vector3();
-    let b = random_vector3();
-    let na = random_nalgebra_vector3();
-    let nb = random_nalgebra_vector3();
+    let v1 = Vector3::new(1.0, 2.0, 3.0);
+    let v2 = Vector3::new(4.0, 5.0, 6.0);
+    let nv1 = NalgebraVector3::new(1.0, 2.0, 3.0);
+    let nv2 = NalgebraVector3::new(4.0, 5.0, 6.0);
 
     c.bench_function("fast_vec_add", |b| {
-        b.iter(|| black_box(a + b));
+        b.iter(|| black_box(v1 + v2));
     });
     c.bench_function("nalgebra_add", |b| {
-        b.iter(|| black_box(na + nb));
+        b.iter(|| black_box(nv1 + nv2));
     });
 }
 
 fn benchmark_sub(c: &mut Criterion) {
-    let a = random_vector3();
-    let b = random_vector3();
-    let na = random_nalgebra_vector3();
-    let nb = random_nalgebra_vector3();
+    let v1 = Vector3::new(4.0, 5.0, 6.0);
+    let v2 = Vector3::new(1.0, 2.0, 3.0);
+    let nv1 = NalgebraVector3::new(4.0, 5.0, 6.0);
+    let nv2 = NalgebraVector3::new(1.0, 2.0, 3.0);
 
     c.bench_function("fast_vec_sub", |b| {
-        b.iter(|| black_box(a - b));
+        b.iter(|| black_box(v1 - v2));
     });
     c.bench_function("nalgebra_sub", |b| {
-        b.iter(|| black_box(na - nb));
+        b.iter(|| black_box(nv1 - nv2));
     });
 }
 
 fn benchmark_mul_scalar(c: &mut Criterion) {
-    let a = random_vector3();
-    let na = random_nalgebra_vector3();
+    let v = Vector3::new(1.0, 2.0, 3.0);
+    let nv = NalgebraVector3::new(1.0, 2.0, 3.0);
 
     c.bench_function("fast_vec_mul_scalar", |b| {
-        b.iter(|| black_box(a * 2.5));
+        b.iter(|| black_box(v * 2.5));
     });
     c.bench_function("nalgebra_mul_scalar", |b| {
-        b.iter(|| black_box(na * 2.5));
+        b.iter(|| black_box(nv * 2.5));
     });
 }
 
 fn benchmark_div_scalar(c: &mut Criterion) {
-    let a = random_vector3();
-    let na = random_nalgebra_vector3();
+    let v = Vector3::new(2.5, 5.0, 7.5);
+    let nv = NalgebraVector3::new(2.5, 5.0, 7.5);
 
     c.bench_function("fast_vec_div_scalar", |b| {
-        b.iter(|| black_box(a / 2.5));
+        b.iter(|| black_box(v / 2.5));
     });
     c.bench_function("nalgebra_div_scalar", |b| {
-        b.iter(|| black_box(na / 2.5));
+        b.iter(|| black_box(nv / 2.5));
     });
 }
 
 fn benchmark_neg(c: &mut Criterion) {
-    let a = random_vector3();
-    let na = random_nalgebra_vector3();
+    let v = Vector3::new(1.0, -2.0, 3.0);
+    let nv = NalgebraVector3::new(1.0, -2.0, 3.0);
 
     c.bench_function("fast_vec_neg", |b| {
-        b.iter(|| black_box(-a));
+        b.iter(|| black_box(-v));
     });
     c.bench_function("nalgebra_neg", |b| {
-        b.iter(|| black_box(-na));
+        b.iter(|| black_box(-nv));
     });
 }
 
 fn benchmark_dot(c: &mut Criterion) {
-    let a = random_vector3();
-    let b = random_vector3();
-    let na = random_nalgebra_vector3();
-    let nb = random_nalgebra_vector3();
+    let v1 = Vector3::new(1.0, 2.0, 3.0);
+    let v2 = Vector3::new(4.0, 5.0, 6.0);
+    let nv1 = NalgebraVector3::new(1.0, 2.0, 3.0);
+    let nv2 = NalgebraVector3::new(4.0, 5.0, 6.0);
 
     c.bench_function("fast_vec_dot", |b| {
-        b.iter(|| black_box(a.dot(b)));
+        b.iter(|| black_box(v1.dot(v2)));
     });
     c.bench_function("nalgebra_dot", |b| {
-        b.iter(|| black_box(na.dot(&nb)));
+        b.iter(|| black_box(nv1.dot(&nv2)));
     });
 }
 
 fn benchmark_magnitude_squared(c: &mut Criterion) {
-    let a = random_vector3();
-    let na = random_nalgebra_vector3();
+    let v = Vector3::new(3.0, 4.0, 5.0);
+    let nv = NalgebraVector3::new(3.0, 4.0, 5.0);
 
     c.bench_function("fast_vec_magnitude_squared", |b| {
-        b.iter(|| black_box(a.magnitude_squared()));
+        b.iter(|| black_box(v.magnitude_squared()));
     });
     c.bench_function("nalgebra_magnitude_squared", |b| {
-        b.iter(|| black_box(na.magnitude_squared()));
+        b.iter(|| black_box(nv.magnitude_squared()));
     });
 }
 
 fn benchmark_magnitude(c: &mut Criterion) {
-    let a = random_vector3();
-    let na = random_nalgebra_vector3();
+    let v = Vector3::new(3.0, 4.0, 5.0);
+    let nv = NalgebraVector3::new(3.0, 4.0, 5.0);
 
     c.bench_function("fast_vec_magnitude", |b| {
-        b.iter(|| black_box(a.magnitude()));
+        b.iter(|| black_box(v.magnitude()));
     });
     c.bench_function("nalgebra_magnitude", |b| {
-        b.iter(|| black_box(na.magnitude()));
+        b.iter(|| black_box(nv.magnitude()));
     });
 }
 
 fn benchmark_normalize(c: &mut Criterion) {
-    let a = random_vector3();
-    let na = random_nalgebra_vector3();
+    let v = Vector3::new(3.0, 4.0, 5.0);
+    let nv = NalgebraVector3::new(3.0, 4.0, 5.0);
 
     c.bench_function("fast_vec_normalize", |b| {
-        b.iter(|| black_box(a.normalize()));
+        b.iter(|| black_box(v.normalize()));
     });
     c.bench_function("nalgebra_normalize", |b| {
-        b.iter(|| black_box(na.normalize()));
+        b.iter(|| black_box(nv.normalize()));
     });
 }
 
 fn benchmark_cross(c: &mut Criterion) {
-    let a = random_vector3();
-    let b = random_vector3();
-    let na = random_nalgebra_vector3();
-    let nb = random_nalgebra_vector3();
+    let v1 = Vector3::new(1.0, 0.0, 0.0);
+    let v2 = Vector3::new(0.0, 1.0, 0.0);
+    let nv1 = NalgebraVector3::new(1.0, 0.0, 0.0);
+    let nv2 = NalgebraVector3::new(0.0, 1.0, 0.0);
 
     c.bench_function("fast_vec_cross", |b| {
-        b.iter(|| black_box(a.cross(b)));
+        b.iter(|| black_box(v1.cross(v2)));
     });
     c.bench_function("nalgebra_cross", |b| {
-        b.iter(|| black_box(na.cross(&nb)));
+        b.iter(|| black_box(nv1.cross(&nv2)));
     });
 }
 
 fn benchmark_distance(c: &mut Criterion) {
-    let a = random_vector3();
-    let b = random_vector3();
-    let na = random_nalgebra_vector3();
-    let nb = random_nalgebra_vector3();
+    let v1 = Vector3::new(0.0, 0.0, 0.0);
+    let v2 = Vector3::new(3.0, 4.0, 5.0);
+    let nv1 = NalgebraVector3::new(0.0, 0.0, 0.0);
+    let nv2 = NalgebraVector3::new(3.0, 4.0, 5.0);
 
     c.bench_function("fast_vec_distance", |b| {
-        b.iter(|| black_box(a.distance(b)));
+        b.iter(|| black_box(v1.distance(v2)));
     });
     c.bench_function("nalgebra_distance", |b| {
-        b.iter(|| black_box(na.distance(&nb)));
+        b.iter(|| black_box(nv1.metric_distance(&nv2)));
     });
 }
 
 fn benchmark_distance_squared(c: &mut Criterion) {
-    let a = random_vector3();
-    let b = random_vector3();
-    let na = random_nalgebra_vector3();
-    let nb = random_nalgebra_vector3();
+    let v1 = Vector3::new(0.0, 0.0, 0.0);
+    let v2 = Vector3::new(3.0, 4.0, 5.0);
+    let nv1 = NalgebraVector3::new(0.0, 0.0, 0.0);
+    let nv2 = NalgebraVector3::new(3.0, 4.0, 5.0);
 
     c.bench_function("fast_vec_distance_squared", |b| {
-        b.iter(|| black_box(a.distance_squared(b)));
+        b.iter(|| black_box(v1.distance_squared(v2)));
     });
     c.bench_function("nalgebra_distance_squared", |b| {
-        b.iter(|| black_box(na.distance_squared(&nb)));
+        b.iter(|| black_box((nv1 - nv2).magnitude_squared()));
     });
 }
 
 fn benchmark_getters(c: &mut Criterion) {
-    let a = random_vector3();
-    let na = random_nalgebra_vector3();
+    let v = Vector3::new(1.0, 2.0, 3.0);
+    let nv = NalgebraVector3::new(1.0, 2.0, 3.0);
 
     c.bench_function("fast_vec_getters", |b| {
         b.iter(|| {
-            black_box(a.x());
-            black_box(a.y());
-            black_box(a.z());
+            black_box(v.x());
+            black_box(v.y());
+            black_box(v.z());
         });
     });
     c.bench_function("nalgebra_getters", |b| {
         b.iter(|| {
-            black_box(na.x);
-            black_box(na.y);
-            black_box(na.z);
+            black_box(nv.x);
+            black_box(nv.y);
+            black_box(nv.z);
         });
     });
 }
 
 fn benchmark_setters(c: &mut Criterion) {
-    let mut a = random_vector3();
-    let mut na = random_nalgebra_vector3();
-    let mut rng = rand::thread_rng();
+    let mut v = Vector3::new(1.0, 2.0, 3.0);
+    let mut nv = NalgebraVector3::new(1.0, 2.0, 3.0);
 
     c.bench_function("fast_vec_setters", |b| {
         b.iter(|| {
-            black_box(a.set_x(rng.gen()));
-            black_box(a.set_y(rng.gen()));
-            black_box(a.set_z(rng.gen()));
+            black_box(v.set_x(4.0));
+            black_box(v.set_y(5.0));
+            black_box(v.set_z(6.0));
         });
     });
     c.bench_function("nalgebra_setters", |b| {
         b.iter(|| {
-            black_box(na.x = rng.gen());
-            black_box(na.y = rng.gen());
-            black_box(na.z = rng.gen());
+            black_box(nv.x = 4.0);
+            black_box(nv.y = 5.0);
+            black_box(nv.z = 6.0);
         });
     });
 }
