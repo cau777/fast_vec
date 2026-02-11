@@ -9,14 +9,19 @@ on:
 env:
   RUST_BACKTRACE: 1
 
+permissions:
+  contents: write
+
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install Rust Toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -36,6 +41,21 @@ jobs:
           path: target
           key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
 
+      - name: Cache Tarpaulin
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/cargo-tarpaulin
+          key: ${{ runner.os }}-cargo-tarpaulin-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install Tarpaulin
+        run: |
+          if [ ! -f ~/.cargo/bin/cargo-tarpaulin ]; then
+            cargo install cargo-tarpaulin
+          fi
+
+      - name: Install anybadge
+        run: pip install anybadge
+
       - name: Run Tests
         run: cargo test --all-features
 
@@ -44,3 +64,29 @@ jobs:
 
       - name: Run Clippy
         run: cargo clippy -- -D warnings
+
+      - name: Generate Coverage Report
+        id: coverage
+        run: |
+          cargo tarpaulin --out Json
+          COVERAGE=$(jq -r '.coverage' tarpaulin-report.json | xargs printf "%.2f")
+          echo "percentage=$COVERAGE" >> $GITHUB_OUTPUT
+          echo "Coverage: ${COVERAGE}%"
+
+      - name: Generate Badge
+        run: |
+          mkdir -p badges
+          anybadge -l coverage -v "${{ steps.coverage.outputs.percentage }}" -s "%" -f badges/coverage.svg \
+            50=RED 60=ORANGE 80=BRIGHTGREEN 100=BRIGHTGREEN \
+            -o
+
+      - name: Commit Badge
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan badges
+          git rm -rf .
+          git add badges/coverage.svg
+          git commit -m "Update coverage badge: ${{ steps.coverage.outputs.percentage }}%"
+          git push -f origin badges
