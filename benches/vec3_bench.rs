@@ -1,4 +1,4 @@
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{Criterion, black_box, criterion_group, criterion_main};
 use fast_vec::Vector3;
 use nalgebra::Vector3 as NalgebraVector3;
 
