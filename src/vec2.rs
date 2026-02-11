@@ -1,7 +1,7 @@
 use std::fmt::{Debug, Formatter, Result};
-use std::simd::f64x4;
+use std::simd::f64x2;
 
-pub struct Vector2(f64x4);
+pub struct Vector2(f64x2);
 
 impl Debug for Vector2 {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
@@ -13,19 +13,19 @@ impl Vector2 {
     #[inline]
     #[must_use]
     pub fn new(x: f64, y: f64) -> Self {
-        Self(f64x4::from_array([x, y, 0.0, 0.0]))
+        Self(f64x2::from_array([x, y]))
     }
 
     #[inline]
     #[must_use]
     pub fn zeros() -> Self {
-        Self(f64x4::default())
+        Self(f64x2::default())
     }
 
     #[inline]
     #[must_use]
     pub fn ones() -> Self {
-        Self(f64x4::from_array([1.0, 1.0, 0.0, 0.0]))
+        Self(f64x2::from_array([1.0, 1.0]))
     }
 
     #[inline]
@@ -122,7 +122,7 @@ impl std::ops::Mul<f64> for Vector2 {
 
     #[inline]
     fn mul(self, rhs: f64) -> Self::Output {
-        Self(self.0 * f64x4::splat(rhs))
+        Self(self.0 * f64x2::splat(rhs))
     }
 }
 
@@ -140,7 +140,7 @@ impl std::ops::Div<f64> for Vector2 {
 
     #[inline]
     fn div(self, rhs: f64) -> Self::Output {
-        Self(self.0 / f64x4::splat(rhs))
+        Self(self.0 / f64x2::splat(rhs))
     }
 }
 
@@ -170,14 +170,14 @@ impl std::ops::SubAssign for Vector2 {
 impl std::ops::MulAssign<f64> for Vector2 {
     #[inline]
     fn mul_assign(&mut self, rhs: f64) {
-        self.0 *= f64x4::splat(rhs);
+        self.0 *= f64x2::splat(rhs);
     }
 }
 
 impl std::ops::DivAssign<f64> for Vector2 {
     #[inline]
     fn div_assign(&mut self, rhs: f64) {
-        self.0 /= f64x4::splat(rhs);
+        self.0 /= f64x2::splat(rhs);
     }
 }
 
