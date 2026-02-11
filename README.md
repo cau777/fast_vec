@@ -5,10 +5,12 @@ High-performance 2D and 3D vector types using SIMD for maximum speed.
 ## Features
 
 - **SIMD-accelerated**: Uses Rust's `portable_simd` for hardware-optimized vector operations
-- **Zero-cost abstractions**: All operations are inlined for maximum performance
-- **Copy types**: Vectors implement `Copy`, making them cheap to pass by value
 - **Comprehensive API**: Supports all common vector operations
 - **Well-tested**: Extensive test coverage for correctness
+
+### Performance
+
+See [BENCHMARK_RESULTS.md](https://github.com/cau777/fast_vec/blob/master/BENCHMARK_RESULTS.md)
 
 ## Vector Types
 
