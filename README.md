@@ -14,7 +14,7 @@ High-performance 2D and 3D vector types using SIMD for maximum speed.
 
 ### `Vector2`
 
-2D vector using `f64x4` SIMD internally.
+2D vector using `f64x2` SIMD internally.
 
 ```rust
 use fast_vec::Vector2;
