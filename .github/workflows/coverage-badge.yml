@@ -34,17 +34,17 @@ jobs:
       - name: Generate Coverage Report
         id: coverage
         run: |
-          COVERAGE=$(cargo tarpaulin --out Stdout 2>&1 | grep -oE '\|\| [0-9]+\.[0-9]+%' | grep -oE '[0-9]+\.[0-9]+' | tail -1 || echo "0.0")
+          cargo tarpaulin --out Json
+          COVERAGE=$(jq -r '.coverage' tarpaulin-report.json | xargs printf "%.2f")
           echo "percentage=$COVERAGE" >> $GITHUB_OUTPUT
           echo "Coverage: ${COVERAGE}%"
 
       - name: Generate Badge
         run: |
           mkdir -p badges
-          anybadge -l coverage -v "${{ steps.coverage.outputs.percentage }}%" -f badges/coverage.svg \
-            --range 0,40,60,80,100 \
-            --color red,orange,yellow,brightgreen,brightgreen \
-            --overwrite
+          anybadge -l coverage -v "${{ steps.coverage.outputs.percentage }}" -s "%" -f badges/coverage.svg \
+            50=red 60=orange 80=brightgreen 100=brightgreen \
+            -o
 
       - name: Commit Badge
         run: |

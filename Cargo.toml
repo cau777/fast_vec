@@ -9,7 +9,6 @@ edition = "2024"
 [dev-dependencies]
 criterion = "0.5"
 nalgebra = "0.33"
-rand = "0.8"
 
 [[bench]]
 name = "dummy"
