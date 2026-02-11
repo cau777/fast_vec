@@ -42,9 +42,8 @@ jobs:
       - name: Generate Badge
         run: |
           mkdir -p badges
-          anybadge -l coverage -v "${{ steps.coverage.outputs.percentage }}" -s "%" -f badges/coverage.svg \
-            50=red 60=orange 80=brightgreen 100=brightgreen \
-            -o
+          anybadge -l coverage -v "${{ steps.coverage.outputs.percentage }}" -s "%" -f badges/coverage.svg -o \
+            50=red 60=orange 80=brightgreen 100=brightgreen
 
       - name: Commit Badge
         run: |
