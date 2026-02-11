@@ -1,4 +1,4 @@
-# fast-vec
+# fast_vec
 
 High-performance 2D and 3D vector types using SIMD for maximum speed.
 
