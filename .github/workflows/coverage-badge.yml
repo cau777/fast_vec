@@ -1,0 +1,57 @@
+name: Generate Coverage Badge
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+permissions:
+  contents: write
+
+jobs:
+  coverage-badge:
+    name: Generate Coverage Badge
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: nightly
+
+      - name: Install tarpaulin
+        run: cargo install cargo-tarpaulin
+
+      - name: Install anybadge
+        run: pip install anybadge
+
+      - name: Generate Coverage Report
+        id: coverage
+        run: |
+          COVERAGE=$(cargo tarpaulin --out Stdout 2>&1 | grep -oE '\|\| [0-9]+\.[0-9]+%' | grep -oE '[0-9]+\.[0-9]+' | tail -1 || echo "0.0")
+          echo "percentage=$COVERAGE" >> $GITHUB_OUTPUT
+          echo "Coverage: ${COVERAGE}%"
+
+      - name: Generate Badge
+        run: |
+          mkdir -p badges
+          anybadge -l coverage -v "${{ steps.coverage.outputs.percentage }}%" -f badges/coverage.svg \
+            --range 0,40,60,80,100 \
+            --color red,orange,yellow,brightgreen,brightgreen \
+            --overwrite
+
+      - name: Commit Badge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan badges
+          git rm -rf .
+          git add badges/coverage.svg
+          git commit -m "Update coverage badge: ${{ steps.coverage.outputs.percentage }}%"
+          git push -f origin badges

@@ -1,5 +1,8 @@
 # fast_vec
 
+[![Tests](https://github.com/cau777/fast_vec/actions/workflows/tests.yml/badge.svg)](https://github.com/cau777/fast_vec/actions/workflows/tests.yml)
+[![Coverage](https://raw.githubusercontent.com/cau777/fast_vec/badges/badges/coverage.svg)](https://github.com/cau777/fast_vec/tree/badges)
+
 High-performance 2D and 3D vector types using SIMD for maximum speed.
 
 ## Features
