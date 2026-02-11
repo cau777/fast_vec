@@ -19,7 +19,7 @@ impl Vector2 {
     #[inline]
     #[must_use]
     pub fn zeros() -> Self {
-        Self(f64x4::splat(0.0))
+        Self(f64x4::default())
     }
 
     #[inline]

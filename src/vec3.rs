@@ -20,7 +20,7 @@ impl Vector3 {
     #[inline]
     #[must_use]
     pub fn zeros() -> Self {
-        Self(f64x4::splat(0.0))
+        Self(f64x4::default())
     }
 
     #[inline]
@@ -71,7 +71,7 @@ impl Vector3 {
     #[inline]
     #[must_use]
     pub fn magnitude_squared(self) -> f64 {
-        self.dot(self)
+        (self.0 * self.0).reduce_sum()
     }
 
     #[inline]
