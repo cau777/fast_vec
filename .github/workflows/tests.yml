@@ -76,9 +76,8 @@ jobs:
       - name: Generate Badge
         run: |
           mkdir -p badges
-          anybadge -l coverage -v "${{ steps.coverage.outputs.percentage }}" -s "%" -f badges/coverage.svg \
-            50=RED 60=ORANGE 80=BRIGHTGREEN 100=BRIGHTGREEN \
-            -o
+          anybadge -l coverage -v "${{ steps.coverage.outputs.percentage }}" -s "%" -f badges/coverage.svg -o \
+            50=RED 60=ORANGE 80=BRIGHTGREEN 100=BRIGHTGREEN
 
       - name: Commit Badge
         if: github.event_name == 'push'
