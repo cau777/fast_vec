@@ -12,6 +12,10 @@ High-performance 2D and 3D vector types using SIMD for maximum speed.
 
 See [BENCHMARK_RESULTS.md](https://github.com/cau777/fast_vec/blob/master/BENCHMARK_RESULTS.md)
 
+**Note:** This is only expected to perform well on modern CPUs.
+The project compiles using `RUSTFLAGS='-C target-cpu=native'` (defined in 
+[config.toml](https://github.com/cau777/fast_vec/blob/master/config.toml)).
+
 ## Vector Types
 
 ### `Vector2`
