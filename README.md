@@ -78,16 +78,25 @@ cargo test
 To run benchmarks comparing with `nalgebra`:
 
 ```bash
+# Run all benchmarks
+cargo bench --bench vec2_bench
 cargo bench --bench vec3_bench
+
+# Or run a quick dummy benchmark for testing
+cargo bench --bench dummy
 ```
 
 To generate a comparison table (requires `jq` and `bc`):
 
 ```bash
+# Run full benchmarks and generate comparison
 bash scripts/compare_benchmarks.sh
+
+# Or generate comparison from existing benchmark results (faster)
+bash scripts/compare_quick.sh
 ```
 
-This will create `BENCHMARK_RESULTS.md` with a performance comparison table.
+This will create `BENCHMARK_RESULTS.md` with performance comparison tables for both Vector2 and Vector3.
 
 ## License
 
