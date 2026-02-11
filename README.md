@@ -97,7 +97,3 @@ bash scripts/compare_benchmarks.sh
 ```
 
 This will create `BENCHMARK_RESULTS.md` with performance comparison tables for both Vector2 and Vector3.
-
-## License
-
-MIT OR Apache-2.0
