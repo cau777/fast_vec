@@ -31,7 +31,6 @@ generate_table() {
         local nalg_json="$CRITERION_DIR/nalgebra${dim}_${op}/new/estimates.json"
 
         if [ -f "$fast_json" ] && [ -f "$nalg_json" ]; then
-          echo $op
             local fast_time=$(jq -r '.mean.point_estimate' "$fast_json" 2>/dev/null)
             local nalg_time=$(jq -r '.mean.point_estimate' "$nalg_json" 2>/dev/null)
 
