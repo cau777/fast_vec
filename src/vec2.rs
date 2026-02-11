@@ -191,7 +191,7 @@ impl PartialEq for Vector2 {
 impl Clone for Vector2 {
     #[inline]
     fn clone(&self) -> Self {
-        Self(self.0)
+        *self
     }
 }
 

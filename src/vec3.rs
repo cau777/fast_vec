@@ -210,7 +210,7 @@ impl PartialEq for Vector3 {
 impl Clone for Vector3 {
     #[inline]
     fn clone(&self) -> Self {
-        Self(self.0)
+        *self
     }
 }
 
