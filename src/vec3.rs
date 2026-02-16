@@ -159,7 +159,7 @@ impl std::ops::Div<f64> for Vector3 {
 
     #[inline]
     fn div(self, rhs: f64) -> Self::Output {
-        Self(self.0 / f64x4::splat(rhs))
+        Self(self.0 * f64x4::splat(1.0 / rhs))
     }
 }
 
