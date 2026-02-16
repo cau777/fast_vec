@@ -1,7 +1,7 @@
 [package]
 name = "fast-vec"
 description = "Vector2 and Vector3 classes that use simd for performance"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 
 [dependencies]
